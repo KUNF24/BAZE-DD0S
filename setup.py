@@ -23,4 +23,4 @@ elif c == "1":
      os.system("pip3 install slowloris")
      os.system("pip3 install service apache2 start")
      os.system("pip3 install service apache2 status")
-print("Done.")￼Enter
+print("Done.")
