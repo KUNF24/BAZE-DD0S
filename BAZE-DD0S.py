@@ -44,14 +44,9 @@ print("\033[91m||           B I R U H  B I D A M  N A F D I K A  Y A  A Q S H A 
 print("\033[93m||======= B A S E ==============================================================\033[0m")
 print("\033[4m__________________________________________________________________________________\033[0m")
 
-
-parser = argparse.ArgumentParser(
-    description="Slowloris, low bandwidth stress test tool for websites"
-)
-parser.add_argument("host", nargs="?", help="Host to perform stress test on")
-parser.add_argument(
-    "-p", "--port", default=80, help="Port of webserver, usually 80", type=int
-)
+args = parser.parse_args()
+print(args.filename, args.count, args.verbose)
+description="Slowloris, low bandwidth stress test tool for websites")
 
 if len(sys.argv) <= 1:
     parser.print_help()
