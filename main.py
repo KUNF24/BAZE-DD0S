@@ -8,7 +8,10 @@ import time
 import fade
 import asyncio
 import aiohttp
-
+# Clear command prompt based on the operating system
+if os.name == "nt":  # Windows
+    os.system("cls")
+else:  # Unix/Linux/Mac
 
 os.system("Clear")
 
