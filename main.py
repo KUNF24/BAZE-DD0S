@@ -17,19 +17,19 @@ else:  # Unix/Linux/Mac
     os.system("Clear")
 
 logo = """
-           ÷÷      ÷÷  ÷÷ ÷÷ ÷÷        ÷÷ ÷÷           ÷÷
-           ÷÷    ÷÷    ÷÷            ÷÷     ÷÷       ÷÷
-           ÷÷  ÷÷      ÷÷                   ÷÷     ÷÷  ÷÷
-           ÷÷ ÷÷       ÷÷ ÷÷ ÷÷           ÷÷     ÷÷    ÷÷
-           ÷÷  ÷÷      ÷÷               ÷÷      ÷÷ ÷÷  ÷÷
-           ÷÷    ÷÷    ÷÷             ÷÷               ÷÷
-           ÷÷      ÷÷  ÷÷            ÷÷ ÷÷ ÷÷          ÷÷
-_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—             
-_—"\033[32m              THIS SCRIPT IS A DEDICATION           
-_—"\033[33m         TO THE STABILIZATION OF THE MARTYRS
-_—"\033[34m                     design by: KunF24
-_—"\033[35m                         ——oO0Oo——
-_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_— 
+         ÷÷      ÷÷  ÷÷ ÷÷ ÷÷        ÷÷ ÷÷           ÷÷
+         ÷÷    ÷÷    ÷÷            ÷÷     ÷÷       ÷÷
+         ÷÷  ÷÷      ÷÷                   ÷÷     ÷÷  ÷÷
+         ÷÷ ÷÷       ÷÷ ÷÷ ÷÷           ÷÷     ÷÷    ÷÷
+         ÷÷  ÷÷      ÷÷               ÷÷      ÷÷ ÷÷  ÷÷
+         ÷÷    ÷÷    ÷÷             ÷÷               ÷÷
+         ÷÷      ÷÷  ÷÷            ÷÷ ÷÷ ÷÷          ÷÷
+_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_             
+_—"\033[32m              THIS SCRIPT IS A DEDICATION            _—
+_—"\033[33m         TO THE STABILIZATION OF THE MARTYRS         _—
+_—"\033[34m                     design by: KunF24               _—
+_—"\033[35m                         ——oO0Oo——                   _—
+_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_
 """
 faded_text = fade.fire(logo)
 print(faded_text)
@@ -197,8 +197,8 @@ def init_socket(ip: str):
 
 
 def slowloris_iteration():
-    logging.info("[✴️]  \033[93mTime to flood   \033[31m[\033[34mThe server\033[31m]  \033[32m" +url+ "\033[0m")
-    logging.info("[✴️]  \033[96mSocket count:   \033[35m[\033[32m%s\033[35m]\033[0m", len(list_of_sockets))
+    logging.info("[+]  \033[93mTime to flood   \033[31m[\033[34mThe server\033[31m]  \033[32m" +url+ "\033[0m")
+    logging.info("[+]  \033[96mSocket count:   \033[35m[\033[32m%s\033[35m]\033[0m", len(list_of_sockets))
 
     # Try to send a header line to each socket
     for s in list(list_of_sockets):
