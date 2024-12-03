@@ -40,7 +40,7 @@ parser.add_argument("host", nargs="?", help="Host to perform stress test on")
 parser.add_argument(
     "-p", "--port", default=80, help="Port of webserver, usually 80", type=int
 )
-parser.add_argument(
+parser.add_argument
     "-s",
     "--sockets",
     default=150,
