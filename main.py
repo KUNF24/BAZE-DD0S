@@ -13,7 +13,7 @@ if os.name == "nt":  # Windows
     os.system("cls")
 else:  # Unix/Linux/Mac
 
-os.system("Clear")
+    os.system("Clear")
 
 logo = """
                                 ÷÷                         ÷÷
