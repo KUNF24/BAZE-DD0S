@@ -34,7 +34,6 @@ _—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—
 faded_text = fade.fire(logo)
 print(faded_text)
 parser = argparse.ArgumentParser(
-    description="Slowloris, low bandwidth stress test tool for websites"
 )
 parser.add_argument("host", nargs="?", help="Host to perform stress test on")
 parser.add_argument(
