@@ -43,27 +43,6 @@ parser.add_argument(
     type=int,
 )
 parser.add_argument(
-    "-v",
-    "--verbose",
-    dest="verbose",
-    action="store_true",
-    help="Increases logging",
-)
-parser.add_argument(
-    "-ua",
-    "--randuseragents",
-    dest="randuseragent",
-    action="store_true",
-    help="Randomizes user-agents with each request",
-)
-parser.add_argument(
-    "-x",
-    "--useproxy",
-    dest="useproxy",
-    action="store_true",
-    help="Use a SOCKS5 proxy for connecting",
-)
-parser.add_argument(
     "--proxy-host", default="127.0.0.1", help="SOCKS5 proxy host"
 )
 parser.add_argument(
