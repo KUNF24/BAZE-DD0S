@@ -10,9 +10,6 @@ if c == "0":
     os.system("aptget install util-linux")
     os.system("apt-get install x11-repo")
     os.system("pip install slowloris")
-    os.system("pip install service apache2 start")
-    os.system("pip install service apache2 status")
-
 elif c == "1":
 
      os.system("apt-get install seanime")
@@ -21,6 +18,4 @@ elif c == "1":
      os.system("aptget install util-linux")
      os.system("apt-get install x11-repo")
      os.system("pip3 install slowloris")
-     os.system("pip3 install service apache2 start")
-     os.system("pip3 install service apache2 status")
 print("Done.")
