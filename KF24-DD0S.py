@@ -33,7 +33,7 @@ print("\033[32mWelcome to KF22-DDoS\033[0m")
 ip = input("\033[36mIP/Domain: \033[0m")
 port = int(input("\033[34mPort: \033[0m"))
 
-url = "\033[33mhttp://\033[0m" + str(ip)
+url = "http://" + str(ip)
 
 def randomip():
   randip = []
@@ -50,7 +50,8 @@ def randomip():
   randip = str(randip[0]) + "." + str(randip[1]) + "." + str(randip[2]) + "." + str(randip[3])
   return(randip)
 
-print("[>>>] Starting the attack [<<<]")
+print("\033[33m[Starting the attack]\033[0m")
+print("\033[32mKF22  \033[91m" +str(u)+ "  \033[93m[\033[34mAttack Sent\033[93m]  \033[36m" +ip+ "  \033[96mFinish\033[0m")
 
 
 time.sleep(1)
