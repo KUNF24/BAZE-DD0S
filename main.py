@@ -40,6 +40,14 @@ url = input(ask)
 async with session.get(url) as response:
             # You can add some minimal processing here if needed
             pass
+def Factorial(n): # return factorial
+    result = 1
+    for i in range (1,n):
+        result = result * i
+    print "factorial is ",result
+    return result
+
+print Factorial(10)
         counter.increment()
     except Exception as e:
         print(f"Error: {e}")
