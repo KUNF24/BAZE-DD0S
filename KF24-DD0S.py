@@ -14,7 +14,6 @@ import urllib3
 from argparse import ArgumentParser
 import threadpool
 from urllib import parse
-from time import time, sleep, os
 
 os.system("Clear")
 logo = """
