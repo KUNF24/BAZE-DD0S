@@ -210,8 +210,8 @@ def init_socket(ip: str):
 
 
 def slowloris_iteration():
-    logging.info("\033[93mMengirim pesan-damai agar Dunia tetap hidup..\033[0m")
-    logging.info("\033[91mSocket count: %s\033[0m", len(list_of_sockets))
+    logging.info("[✴️]  \033[93mTime to flood   \033[31m[\033[34mThe server\033[31m]  \033[32m" +url+ "\033[0m")
+    logging.info("[✴️]  \033[96mSocket count:   \033[35m[\033[32m%s\033[35m]\033[0m", len(list_of_sockets))
 
     # Try to send a header line to each socket
     for s in list(list_of_sockets):
