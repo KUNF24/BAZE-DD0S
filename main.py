@@ -37,9 +37,7 @@ socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 addr = (str(),int())
 ask = fade.pinkred("Enter the target IP/URL:")
 url = input(ask)
-
-    try:
-        async with session.get(url) as response:
+async with session.get(url) as response:
             # You can add some minimal processing here if needed
             pass
         counter.increment()
