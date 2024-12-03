@@ -33,6 +33,9 @@ _—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—
 """
 faded_text = fade.fire(logo)
 print(faded_text)
+socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+addr = (str(),int())
+ask = fade.pinkred("Enter the target IP/URL:")
 async def fire_and_forget(url, session, counter):
     try:
         async with session.get(url) as response:
