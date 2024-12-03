@@ -45,8 +45,6 @@ def Factorial(n): # return factorial
     for i in range (1,n):
         result = result * i
     print("")
-
-print Factorial(10)
         counter.increment()
     except Exception as e:
         print(f"Error: {e}")
