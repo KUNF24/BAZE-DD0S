@@ -25,8 +25,8 @@ logo = """
          ÷÷    ÷÷    ÷÷             ÷÷               ÷÷
          ÷÷      ÷÷  ÷÷            ÷÷ ÷÷ ÷÷          ÷÷
 _—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_             
-_—\033[32m              THIS SCRIPT IS A DEDICATION                   _—
-_—\033[33m         TO THE STABILIZATION OF THE MARTYRS                _—
+_—\033[32m                THIS SCRIPT IS A DEDICATION                 _—
+_—\033[33m           TO THE STABILIZATION OF THE MARTYRS              _—
 _—\033[34m                     design by: KunF24                      _—
 _—\033[35m                         ——oO0Oo——                          _—
 _—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_
