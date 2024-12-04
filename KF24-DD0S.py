@@ -3,7 +3,6 @@ import socket
 import string
 import random
 import threading
-import fade
 from colorama import Fore, Back, Style
 
 
@@ -23,7 +22,7 @@ _—\033[34m                     design by: KunF24                      _—
 _—\033[35m                         ——oO0Oo——                          _—
 _—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_
 """
-		print(Fore.RED+banner)
+		print(Fore.RED+logo)
 		print(Fore.YELLOW+"""
 		[+] An Advance DDOS Tool Using Sockets Written in Python [+]"""+Fore.GREEN+"""
 		[+] Developer : Kanao#7218 [ """+Fore.WHITE+"""SecretsX ]""")
