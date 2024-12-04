@@ -31,11 +31,10 @@ _—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—
         """
 		print(Fore.RED+banner)
 		print(Fore.YELLOW+"""
-		[+] An Advance DDOS Tool Using Sockets Written in Python [+]"""+Fore.GREEN+"""
-		[+] Developer : Kanao#7218 [ """+Fore.WHITE+"""SecretsX ]""")
-		print(Fore.WHITE+"""
-		[+] Type `help` If You Are A Beginner [+]
-			""")
+ip = str(input("\033[94mTarget IP :  \033[0m"))
+port = int(input("\033[97mTarget Port :  \033[0m"))
+threads = int(input("\033[92mThreads :  \033[0m"))
+""")
 		
 
 	def start_attack(self,host,port=None):
