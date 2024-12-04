@@ -28,14 +28,9 @@ _—\033[33m           TO THE STABILIZATION OF THE MARTYRS              _—
 _—\033[34m                     design by: KunF24                      _—
 _—\033[35m                         ——oO0Oo——                          _—
 _—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_
-"""
-		print(Fore.RED+banner)
-		print(Fore.YELLOW+"""
-		[+] An Advance DDOS Tool Using Sockets Written in Python [+]"""+Fore.GREEN+"""
-		[+] Developer : Kanao#7218 [ """+Fore.WHITE+"""SecretsX ]""")
-		print(Fore.WHITE+"""
-		[+] Type `help` If You Are A Beginner [+]
-			""")
+       print(Fore.RED+banner)
+       print(Fore.YELLOW+"""
+		
 
 	def start_attack(self,host,port=None):
 		self.sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
