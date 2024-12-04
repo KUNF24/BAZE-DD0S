@@ -26,6 +26,8 @@ _—\033[34m                     design by: KunF24                      _—
 _—\033[35m                         ——oO0Oo——                          _—
 _—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_
         """
+faded_text = fade.fire(logo)
+print(faded_text)
 # Parse inputs
 host = ""
 ip = ""
