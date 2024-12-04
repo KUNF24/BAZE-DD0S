@@ -68,7 +68,7 @@ def print_status():
     thread_num += 1
     #print the output on the sameline
     sys.stdout.write(f"\r {time.ctime().split( )[3]} [{str(thread_num)}] ")
-    sys.stdout.write(f"[✴️]  \033[31m" +str(1)+ " \033[32m[KF22-DD0S]  \033[33m[FLOOD ATTACK]  \033[34m" +ip+ "  \033[0m")
+    sys.stdout.write([💥] f"\033[32m[KF22-DD0S]  \033[33m[FLOOD ATTACK]  \033[34m" +ip+ "  \033[0m")
     sys.stdout.flush()
     thread_num_mutex.release()
 
