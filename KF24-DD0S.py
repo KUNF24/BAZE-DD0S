@@ -7,9 +7,10 @@ import string
 import sys
 import threading
 import time
+import fade
 
 os.system("clear")
-
+logo = """
 
          ÷÷      ÷÷  ÷÷ ÷÷ ÷÷        ÷÷ ÷÷           ÷÷
          ÷÷    ÷÷    ÷÷            ÷÷     ÷÷       ÷÷
@@ -25,8 +26,6 @@ _—\033[34m                     design by: KunF24                      _—
 _—\033[35m                         ——oO0Oo——                          _—
 _—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_
         """
-
-
 # Parse inputs
 host = ""
 ip = ""
