@@ -5,9 +5,16 @@ import random
 import threading
 from colorama import Fore, Back, Style
 
+class SockFlood:
+	def __init__(self):
+		os.system("cls")
+		os.system("title PsyFlood - An Advance DDOS Tool ")
+		self.host=None
+		self.portnum=None
+		self.threads=None
 
-os.system("Clear")
-logo = """
+	def graphics(self):
+		banner="""
          ÷÷      ÷÷  ÷÷ ÷÷ ÷÷        ÷÷ ÷÷           ÷÷
          ÷÷    ÷÷    ÷÷            ÷÷     ÷÷       ÷÷
          ÷÷  ÷÷      ÷÷                   ÷÷     ÷÷  ÷÷
@@ -22,7 +29,7 @@ _—\033[34m                     design by: KunF24                      _—
 _—\033[35m                         ——oO0Oo——                          _—
 _—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_—_
 """
-		print(Fore.RED+logo)
+		print(Fore.RED+banner)
 		print(Fore.YELLOW+"""
 		[+] An Advance DDOS Tool Using Sockets Written in Python [+]"""+Fore.GREEN+"""
 		[+] Developer : Kanao#7218 [ """+Fore.WHITE+"""SecretsX ]""")
